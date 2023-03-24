@@ -1,5 +1,6 @@
 package kg.rkd.carstestapplication.data
 
+import android.util.Base64
 import kg.rkd.carstestapplication.data.db.CarDao
 import kg.rkd.carstestapplication.data.db.CarEntity
 import kg.rkd.carstestapplication.domain.CarModel
@@ -18,7 +19,7 @@ class CarsRepositoryImpl(
         return dao.getAsFlow().map { CarModel(
             id = it.id,
             name = it.name,
-            photo = it.photo,
+            photo = Base64.decode(it.photo, Base64.DEFAULT),
             year = it.year,
             engineCapacity = it.engineCapacity,
             createdDate = it.created
@@ -29,7 +30,7 @@ class CarsRepositoryImpl(
         dao.insert(
             CarEntity(
                 name = item.name,
-                photo = item.photo,
+                photo = Base64.encodeToString(item.photo, Base64.DEFAULT),
                 year = item.year,
                 engineCapacity = item.engineCapacity,
                 created = item.createdDate

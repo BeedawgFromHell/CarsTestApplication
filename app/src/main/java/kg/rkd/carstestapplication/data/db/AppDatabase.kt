@@ -42,35 +42,35 @@ class StartingCars(private val context: Context) : RoomDatabase.Callback() {
         return listOf(
             CarEntity(
                 name = "Audi",
-                photo = getCarPhotoAsBase64(R.raw.Audi),
+                photo = getCarPhotoAsBase64(R.raw.audi),
                 year = 2020,
                 created = System.currentTimeMillis(),
                 engineCapacity = 4.5f,
             ),
             CarEntity(
                 name = "BMW X6",
-                photo = getCarPhotoAsBase64(R.raw.BMWX6),
+                photo = getCarPhotoAsBase64(R.raw.bmwx6),
                 year = 2016,
                 created = System.currentTimeMillis(),
                 engineCapacity = 5.0f
             ),
             CarEntity(
                 name = "Lexus RX",
-                photo = getCarPhotoAsBase64(R.raw.LexusRx),
+                photo = getCarPhotoAsBase64(R.raw.lexusrx),
                 year = 2021,
                 created = System.currentTimeMillis(),
                 engineCapacity = 3.5f
             ),
             CarEntity(
                 name = "Optimus Prime",
-                photo = getCarPhotoAsBase64(R.raw.Optimus),
+                photo = getCarPhotoAsBase64(R.raw.optimus),
                 year = 2009,
                 created = System.currentTimeMillis(),
                 engineCapacity = 5.5f
             ),
             CarEntity(
                 name = "Moskvich",
-                photo = getCarPhotoAsBase64(R.raw.Moskvich),
+                photo = getCarPhotoAsBase64(R.raw.moskvich),
                 year = 2022,
                 created = System.currentTimeMillis(),
                 engineCapacity = 2.5f
