@@ -4,26 +4,31 @@ import android.util.Base64
 import kg.rkd.carstestapplication.data.db.CarDao
 import kg.rkd.carstestapplication.data.db.CarEntity
 import kg.rkd.carstestapplication.domain.CarModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 
 interface CarsRepository {
-    suspend fun getCars(): List<CarModel>
+    fun getCars(): Flow<List<CarModel>>
     suspend fun insert(item: CarModel)
 }
 
 class CarsRepositoryImpl(
     private val dao: CarDao
-): CarsRepository {
-    override suspend fun getCars(): List<CarModel> {
-        return dao.getAsFlow().map { CarModel(
-            id = it.id,
-            name = it.name,
-            photo = Base64.decode(it.photo, Base64.DEFAULT),
-            year = it.year,
-            engineCapacity = it.engineCapacity,
-            createdDate = it.created
-        ) }.toList()
+) : CarsRepository {
+    override fun getCars(): Flow<List<CarModel>> {
+        return dao.getAsFlow().map { list ->
+            list.map {
+                CarModel(
+                    id = it.id,
+                    name = it.name,
+                    photo = Base64.decode(it.photo, Base64.DEFAULT),
+                    year = it.year,
+                    engineCapacity = it.engineCapacity,
+                    createdDate = it.created
+                )
+            }
+        }
     }
 
     override suspend fun insert(item: CarModel) {

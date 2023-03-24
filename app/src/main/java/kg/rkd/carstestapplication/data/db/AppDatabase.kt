@@ -27,8 +27,8 @@ class StartingCars(private val context: Context) : RoomDatabase.Callback() {
             getCars().forEach {
                 db.execSQL(
                     """
-                    INSERT INTO cars (name,photo,year,created)
-                    VALUES ('${it.name}', '${it.photo}', ${it.year}, ${it.created}
+                    INSERT INTO cars (id,name,photo,year,created, engine_capacity)
+                    VALUES (${it.id}, '${it.name}', '${it.photo}', ${it.year}, ${it.created}, ${it.engineCapacity})
                 """.trimIndent()
                 )
             }
@@ -41,6 +41,7 @@ class StartingCars(private val context: Context) : RoomDatabase.Callback() {
     private fun getCars(): List<CarEntity> {
         return listOf(
             CarEntity(
+                id = 1,
                 name = "Audi",
                 photo = getCarPhotoAsBase64(R.raw.audi),
                 year = 2020,
@@ -48,6 +49,7 @@ class StartingCars(private val context: Context) : RoomDatabase.Callback() {
                 engineCapacity = 4.5f,
             ),
             CarEntity(
+                id = 2,
                 name = "BMW X6",
                 photo = getCarPhotoAsBase64(R.raw.bmwx6),
                 year = 2016,
@@ -55,6 +57,7 @@ class StartingCars(private val context: Context) : RoomDatabase.Callback() {
                 engineCapacity = 5.0f
             ),
             CarEntity(
+                id = 3,
                 name = "Lexus RX",
                 photo = getCarPhotoAsBase64(R.raw.lexusrx),
                 year = 2021,
@@ -62,6 +65,7 @@ class StartingCars(private val context: Context) : RoomDatabase.Callback() {
                 engineCapacity = 3.5f
             ),
             CarEntity(
+                id = 4,
                 name = "Optimus Prime",
                 photo = getCarPhotoAsBase64(R.raw.optimus),
                 year = 2009,
@@ -69,6 +73,7 @@ class StartingCars(private val context: Context) : RoomDatabase.Callback() {
                 engineCapacity = 5.5f
             ),
             CarEntity(
+                id = 5,
                 name = "Moskvich",
                 photo = getCarPhotoAsBase64(R.raw.moskvich),
                 year = 2022,

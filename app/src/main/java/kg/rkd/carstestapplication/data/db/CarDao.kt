@@ -14,5 +14,5 @@ interface CarDao {
     suspend fun insert(items: List<CarEntity>)
 
     @Query("""SELECT * FROM cars""")
-    fun getAsFlow(): Flow<CarEntity>
+    fun getAsFlow(): Flow<List<CarEntity>>
 }

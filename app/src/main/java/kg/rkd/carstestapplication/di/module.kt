@@ -16,6 +16,7 @@ val koinModule = module {
     single {
         Room.databaseBuilder(androidContext(), AppDatabase::class.java, "cars_db")
             .addCallback(StartingCars(androidContext()))
+            .fallbackToDestructiveMigration()
             .build()
     }
     factory { get<AppDatabase>().carDao() }
