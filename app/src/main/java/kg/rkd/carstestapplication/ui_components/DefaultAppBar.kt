@@ -1,5 +1,6 @@
 package kg.rkd.carstestapplication.ui_components
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
@@ -16,6 +17,7 @@ fun DefaultAppBar(
     title: String = AppConfig.DEFAULT_TOP_BAR_TITLE,
     backEnabled: Boolean = true,
     onBackPressed: () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {},
 ) {
     TopAppBar(
         title = {
@@ -30,7 +32,8 @@ fun DefaultAppBar(
                     )
                 }
             }
-        }
+        },
+        actions = actions
     )
 }
 

@@ -11,11 +11,18 @@
         <action
             android:id="@+id/action_homeFragment_to_addCarFragment"
             app:destination="@id/addCarFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/addCarFragment"
         android:name="kg.rkd.carstestapplication.ui.add_car.AddCarFragment"
         android:label="AddCarFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="kg.rkd.carstestapplication.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" />
 
 </navigation>

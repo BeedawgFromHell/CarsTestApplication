@@ -49,7 +49,7 @@ class CarsInteractorImpl(
 class CarsInteractorImplWithBilling(
     private val interactor: CarsInteractor,
     private val billingRepository: BillingRepository,
-    private val carsRepositoryDecorator: CarsRepositoryDecorator
+    private val carsRepositoryDecorator: CarsRepositoryCarsSavedDecorator
 ) : CarsInteractorBillingDecorator, CarsInteractor by interactor {
 
     override fun getCars(): Flow<List<CarModel>> {
@@ -74,6 +74,10 @@ class CarsInteractorImplWithBilling(
     override fun isAllowedToSaveCar(): Boolean {
         return if (billingRepository.isSubscribed(BillingRepository.Products.SUBSCRIPTION)) true
         else carsRepositoryDecorator.getCarsSavedByUserCount() <= AppConfig.ADD_CAR_LIMIT
+    }
+
+    override fun isSubscribed(): Boolean {
+        return billingRepository.isSubscribed(product = BillingRepository.Products.SUBSCRIPTION)
     }
 
     override suspend fun startSubscriptionPurchaseFlow() {

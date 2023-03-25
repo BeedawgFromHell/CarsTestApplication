@@ -1,5 +1,6 @@
 package kg.rkd.carstestapplication.ui
 
+import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kg.rkd.carstestapplication.domain.CarModel
@@ -16,21 +17,23 @@ class CarsViewModel(
     private val _cars = MutableStateFlow(listOf<CarModel>())
     val cars = _cars.asStateFlow()
 
-    private var job: Job? = null
+    private val _saveCarTries = MutableStateFlow(0)
+    val saveCarTries = _saveCarTries.asStateFlow()
+
+    private val _isSubscribed = MutableStateFlow(false)
+    val isSubscribed = _isSubscribed.asStateFlow()
 
     init {
         startCarsFlow()
     }
 
     private fun startCarsFlow() {
-//        _cars.value = listOf()
-//        if (job != null && job!!.isActive) job!!.cancel()
-        job = interactor.getCars().onEach { _cars.value = it }.launchIn(viewModelScope)
+        interactor.getCars().onEach { _cars.value = it }.launchIn(viewModelScope)
     }
 
 
     fun isAllowedToSaveCar() = interactor.isAllowedToSaveCar()
-
+    fun isSubscribed() = interactor.isSubscribed()
     fun saveCar(model: CarModel, onSuccess: () -> Unit = {}) {
         viewModelScope.launch {
             interactor.saveCar(model)
@@ -45,5 +48,7 @@ class CarsViewModel(
         }
     }
 
+    fun loadSettingsData() {
 
+    }
 }

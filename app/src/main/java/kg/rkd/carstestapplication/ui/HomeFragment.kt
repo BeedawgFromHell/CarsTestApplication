@@ -12,10 +12,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -55,6 +53,9 @@ class HomeFragment : Fragment() {
             setContent {
                 HomeScreen(
                     cars = viewModel.cars.collectAsStateWithLifecycle(),
+                    onSettingsClicked = {
+                        findNavController().navigate(R.id.settingsFragment)
+                    },
                     onFabClicked = {
                         if (viewModel.isAllowedToSaveCar()) {
                             addCarImagePicker.launch("image/*")
@@ -83,11 +84,21 @@ class HomeFragment : Fragment() {
 @Composable
 private fun HomeScreen(
     cars: State<List<CarModel>>,
+    onSettingsClicked: () -> Unit = {},
     onFabClicked: () -> Unit = {},
     onSubscriptionClicked: () -> Unit = {}
 ) {
     Scaffold(
-        topBar = { DefaultAppBar(backEnabled = false) },
+        topBar = {
+            DefaultAppBar(backEnabled = false) {
+                IconButton(modifier = Modifier.padding(9.dp), onClick = onSettingsClicked) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = "settings"
+                    )
+                }
+            }
+        },
         floatingActionButton = {
             FloatingActionButton(
                 modifier = Modifier.padding(end = 32.dp, bottom = 32.dp),

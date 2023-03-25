@@ -56,13 +56,13 @@ class CarsRepositoryImpl(
     }
 }
 
-interface CarsRepositoryDecorator : CarsRepository {
+interface CarsRepositoryCarsSavedDecorator : CarsRepository {
     fun getCarsSavedByUserCount(): Int
 }
 
-class CarsRepositoryDecoratorImpl(
+class CarsRepositoryCarsSavedDecoratorImpl(
     private val carsRepository: CarsRepository,
     private val prefs: AppPreferences
-) : CarsRepositoryDecorator, CarsRepository by carsRepository {
+) : CarsRepositoryCarsSavedDecorator, CarsRepository by carsRepository {
     override fun getCarsSavedByUserCount(): Int = prefs.getInt(AppPreferences.SAVED_CARS_COUNT_KEY)
 }

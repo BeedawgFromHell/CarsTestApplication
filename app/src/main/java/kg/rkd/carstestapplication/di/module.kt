@@ -30,7 +30,7 @@ val koinModule = module {
     single<BillingRepository> { BillingRepositoryFakeImpl(get()) }
 
     single<CarsRepository> { CarsRepositoryImpl(get(), get()) }
-    single<CarsRepositoryDecorator> { CarsRepositoryDecoratorImpl(get(), get()) }
+    single<CarsRepositoryCarsSavedDecorator> { CarsRepositoryCarsSavedDecoratorImpl(get(), get()) }
 
     factory<BillingRepository> { BillingRepositoryFakeImpl(get()) }
     factory<CarsRepository> { CarsRepositoryImpl(get(), get()) }
