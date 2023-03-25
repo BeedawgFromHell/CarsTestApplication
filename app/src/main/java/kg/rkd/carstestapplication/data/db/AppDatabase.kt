@@ -26,11 +26,21 @@ class StartingCars(private val context: Context) : RoomDatabase.Callback() {
 
     override fun onCreate(db: SupportSQLiteDatabase) {
         try {
+
+            getCarPictures().forEach {
+                db.execSQL(
+                    """
+                        INSERT INTO pictures (id, picture)
+                        VALUES (${it.id}, '${it.picture}')
+                    """.trimIndent()
+                )
+            }
+
             getCars().forEach {
                 db.execSQL(
                     """
-                    INSERT INTO cars (id,name,photo,year,created, engine_capacity)
-                    VALUES (${it.id}, '${it.name}', '${it.photo}', ${it.year}, ${it.created}, ${it.engineCapacity})
+                    INSERT INTO cars (id,name,photoId,year,created, engine_capacity)
+                    VALUES (${it.id}, '${it.name}', '${it.photoId}', ${it.year}, ${it.created}, ${it.engineCapacity})
                 """.trimIndent()
                 )
             }
@@ -45,7 +55,7 @@ class StartingCars(private val context: Context) : RoomDatabase.Callback() {
             CarEntity(
                 id = 1,
                 name = "Audi",
-                photo = getCarPhotoAsBase64(R.raw.audi),
+                photoId = 1,
                 year = 2020,
                 created = System.currentTimeMillis(),
                 engineCapacity = 4.5f,
@@ -53,7 +63,7 @@ class StartingCars(private val context: Context) : RoomDatabase.Callback() {
             CarEntity(
                 id = 2,
                 name = "BMW X6",
-                photo = getCarPhotoAsBase64(R.raw.bmwx6),
+                photoId = 2,
                 year = 2016,
                 created = System.currentTimeMillis(),
                 engineCapacity = 5.0f
@@ -61,7 +71,7 @@ class StartingCars(private val context: Context) : RoomDatabase.Callback() {
             CarEntity(
                 id = 3,
                 name = "Lexus RX",
-                photo = getCarPhotoAsBase64(R.raw.lexusrx),
+                photoId = 3,
                 year = 2021,
                 created = System.currentTimeMillis(),
                 engineCapacity = 3.5f
@@ -69,7 +79,7 @@ class StartingCars(private val context: Context) : RoomDatabase.Callback() {
             CarEntity(
                 id = 4,
                 name = "Optimus Prime",
-                photo = getCarPhotoAsBase64(R.raw.optimus),
+                photoId = 4,
                 year = 2009,
                 created = System.currentTimeMillis(),
                 engineCapacity = 5.5f
@@ -77,10 +87,35 @@ class StartingCars(private val context: Context) : RoomDatabase.Callback() {
             CarEntity(
                 id = 5,
                 name = "Moskvich",
-                photo = getCarPhotoAsBase64(R.raw.moskvich),
+                photoId = 5,
                 year = 2022,
                 created = System.currentTimeMillis(),
                 engineCapacity = 2.5f
+            )
+        )
+    }
+
+    private fun getCarPictures(): List<PictureEntity> {
+        return listOf(
+            PictureEntity(
+                id = 1,
+                getCarPhotoAsBase64(R.raw.audi)
+            ),
+            PictureEntity(
+                id = 2,
+                getCarPhotoAsBase64(R.raw.bmwx6)
+            ),
+            PictureEntity(
+                id = 3,
+                getCarPhotoAsBase64(R.raw.lexusrx)
+            ),
+            PictureEntity(
+                id = 4,
+                getCarPhotoAsBase64(R.raw.optimus)
+            ),
+            PictureEntity(
+                id = 5,
+                getCarPhotoAsBase64(R.raw.moskvich)
             )
         )
     }

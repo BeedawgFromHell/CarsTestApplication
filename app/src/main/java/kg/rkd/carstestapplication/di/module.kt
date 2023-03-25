@@ -25,7 +25,7 @@ val koinModule = module {
     factory { AppPreferences(androidContext()) }
 
     factory<BillingRepository> { BillingRepositoryFakeImpl(get()) }
-    factory<CarsRepository> { CarsRepositoryImpl(get()) }
+    factory<CarsRepository> { CarsRepositoryImpl(get(), get()) }
     factory<CarsInteractor> {
         CarsInteractorImplWithBilling(
             interactor = CarsInteractorImpl(get()),
