@@ -1,6 +1,9 @@
 package kg.rkd.carstestapplication.data
 
+import android.content.Context
 import android.util.Base64
+import androidx.sqlite.db.SimpleSQLiteQuery
+import id.zelory.compressor.Compressor
 import kg.rkd.carstestapplication.data.db.CarDao
 import kg.rkd.carstestapplication.data.db.CarEntity
 import kg.rkd.carstestapplication.data.db.PictureDao
@@ -16,15 +19,19 @@ interface CarsRepository {
 
 class CarsRepositoryImpl(
     private val carDao: CarDao,
-    private val pictureDao: PictureDao
+    private val pictureDao: PictureDao,
 ) : CarsRepository {
     override fun getCars(): Flow<List<CarModel>> {
         return carDao.getAsFlow().map { list ->
             list.map {
+
+                val picture = pictureDao.getByQuery(
+                    SimpleSQLiteQuery("SELECT * FROM pictures WHERE id = ?", arrayOf(it.photoId))
+                )
                 CarModel(
                     id = it.id,
                     name = it.name,
-                    photo = Base64.decode(pictureDao.getBy(it.photoId)?.picture, Base64.DEFAULT),
+                    photo = Base64.decode(picture.picture, Base64.DEFAULT),
                     year = it.year,
                     engineCapacity = it.engineCapacity,
                     createdDate = it.created
