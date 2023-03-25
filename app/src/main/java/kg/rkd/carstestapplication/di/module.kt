@@ -6,9 +6,11 @@ import kg.rkd.carstestapplication.data.db.AppDatabase
 import kg.rkd.carstestapplication.data.db.StartingCars
 import kg.rkd.carstestapplication.domain.CarsInteractor
 import kg.rkd.carstestapplication.domain.CarsInteractorBillingDecorator
+import kg.rkd.carstestapplication.domain.SettingsInteractor
 import kg.rkd.carstestapplication.ui.CarsViewModel
+import kg.rkd.carstestapplication.ui.settings.SettingsViewModel
 import kg.rkd.carstestapplication.utils.AppPreferences
-import kg.rkd.carstestapplication.utils.BillingDataStore
+import kg.rkd.carstestapplication.utils.AppDataStore
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -25,7 +27,7 @@ val koinModule = module {
     single { get<AppDatabase>().pictureDao() }
 
     single { AppPreferences(androidContext()) }
-    single { BillingDataStore(androidContext()) }
+    single { AppDataStore(androidContext()) }
 
     single<BillingRepository> { BillingRepositoryFakeImpl(get()) }
 
@@ -44,6 +46,13 @@ val koinModule = module {
             carsRepositoryDecorator = get()
         )
     }
+    factory<SettingsInteractor> {
+        SettingsInteractorImpl(
+            get(),
+            get()
+        )
+    }
 
     viewModel { CarsViewModel(get()) }
+    viewModel { SettingsViewModel(get()) }
 }

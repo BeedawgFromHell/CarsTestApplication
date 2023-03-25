@@ -11,6 +11,8 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,16 +25,15 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.fragment.findNavController
 import kg.rkd.carstestapplication.R
-import kg.rkd.carstestapplication.ui.CarsViewModel
 import kg.rkd.carstestapplication.ui_components.DefaultAppBar
-import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {
 
-    private val viewModel: CarsViewModel by lazy {
-        requireParentFragment().getViewModel()
-    }
+    private val viewModel: SettingsViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +43,14 @@ class SettingsFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 SettingsScreen(
-                    isSubscribed = viewModel.isSubscribed()
+                    isSubscribed = viewModel.isSubscribed.collectAsStateWithLifecycle(),
+                    triesCount = viewModel.tries.collectAsStateWithLifecycle(),
+                    onReset = {
+                        viewModel.reset()
+                    },
+                    onBackPressed = {
+                        findNavController().popBackStack()
+                    }
                 )
             }
         }
@@ -53,9 +61,9 @@ class SettingsFragment : Fragment() {
 @Composable
 private fun SettingsScreen(
     isSubscribed: State<Boolean>,
-    triesCount: Int,
+    triesCount: State<Int>,
     onBackPressed: () -> Unit = {},
-    onRestoreClick: () -> Unit = {},
+    onReset: () -> Unit = {},
 ) {
     Scaffold(topBar = {
         DefaultAppBar(onBackPressed = onBackPressed)
@@ -86,18 +94,20 @@ private fun SettingsScreen(
                     .padding(9.dp)
             )
 
-            CarsCanBeAddedComponent(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(9.dp), value = triesCount
-            )
-
+            if(!isSubscribed.value) {
+                CarsCanBeAddedComponent(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(9.dp),
+                    value = triesCount.value
+                )
+            }
 
             RestoreAppStateComponent(
                 modifier = Modifier
                     .widthIn(min = (screenWidth / 2).dp, max = screenWidth.dp)
                     .heightIn(min = (screenHeight / 3).dp, max = screenHeight.dp),
-                onClick = onRestoreClick
+                onClick = onReset
             )
         }
     }
@@ -135,7 +145,11 @@ private fun SubscriptionStatusComponent(modifier: Modifier = Modifier, isSubscri
 
 @Composable
 private fun CarsCanBeAddedComponent(modifier: Modifier, value: Int) {
-    Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Text(text = "Cars can be added to collection: ", style = MaterialTheme.typography.bodyLarge)
 
         val countText = buildAnnotatedString {
@@ -183,5 +197,8 @@ private fun RestoreAppStateComponent(modifier: Modifier = Modifier, onClick: () 
 @Composable
 @Preview
 private fun Preview() {
-    SettingsScreen()
+    SettingsScreen(
+        isSubscribed = remember { mutableStateOf(false) },
+        triesCount = remember { mutableStateOf(1) }
+    )
 }

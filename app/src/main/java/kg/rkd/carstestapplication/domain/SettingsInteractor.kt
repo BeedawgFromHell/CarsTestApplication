@@ -4,6 +4,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface SettingsInteractor {
     fun isSubscribed(): Flow<Boolean>
-    fun getCarsSavedByUserCount(): Flow<Int>
-    fun restoreData()
+    fun getTriesToSaveCar(): Flow<Int>
+    suspend fun reset()
 }

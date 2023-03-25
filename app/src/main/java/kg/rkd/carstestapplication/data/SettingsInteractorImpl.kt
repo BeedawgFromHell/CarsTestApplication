@@ -1,7 +1,9 @@
 package kg.rkd.carstestapplication.data
 
+import kg.rkd.carstestapplication.AppConfig
 import kg.rkd.carstestapplication.domain.SettingsInteractor
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class SettingsInteractorImpl(
     private val billingRepository: BillingRepository,
@@ -11,12 +13,14 @@ class SettingsInteractorImpl(
         return billingRepository.isSubscribedAsFlow(BillingRepository.Products.SUBSCRIPTION)
     }
 
-    override fun getCarsSavedByUserCount(): Flow<Int> {
-        carsRepositoryImpl.getCarsSavedByUserCount()
+    override fun getTriesToSaveCar(): Flow<Int> {
+        return carsRepositoryImpl.getCarsSavedByUserCountAsFlow().map {
+            AppConfig.ADD_CAR_LIMIT - it
+        }
     }
 
-    override fun restoreData() {
-        TODO("Not yet implemented")
+    override suspend fun reset() {
+        billingRepository.unSub(BillingRepository.Products.SUBSCRIPTION)
+        carsRepositoryImpl.resetCount()
     }
-
 }
