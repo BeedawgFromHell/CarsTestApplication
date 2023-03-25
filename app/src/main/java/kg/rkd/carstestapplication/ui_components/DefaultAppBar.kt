@@ -6,7 +6,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import kg.rkd.carstestapplication.AppConfig
 
@@ -20,6 +19,7 @@ fun DefaultAppBar(
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     TopAppBar(
+        modifier = modifier,
         title = {
             Text(text = title, style = MaterialTheme.typography.titleLarge)
         },
