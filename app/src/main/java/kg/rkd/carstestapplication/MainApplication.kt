@@ -3,7 +3,7 @@ package kg.rkd.carstestapplication
 import android.app.Application
 import android.content.Context
 import androidx.work.*
-import kg.rkd.carstestapplication.data.UnSubWorker
+import kg.rkd.carstestapplication.utils.UnSubWorker
 import kg.rkd.carstestapplication.di.koinModule
 import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.koin.androidContext
