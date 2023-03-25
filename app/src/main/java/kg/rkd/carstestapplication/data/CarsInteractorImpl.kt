@@ -71,9 +71,16 @@ class CarsInteractorImplWithBilling(
         }
     }
 
+    override suspend fun saveCar(car: CarModel) {
+        interactor.saveCar(car)
+        if (!billingRepository.isSubscribed(BillingRepository.Products.SUBSCRIPTION)) {
+            carsRepositoryDecorator.addToCount()
+        }
+    }
+
     override fun isAllowedToSaveCar(): Boolean {
         return if (billingRepository.isSubscribed(BillingRepository.Products.SUBSCRIPTION)) true
-        else carsRepositoryDecorator.getCarsSavedByUserCount() <= AppConfig.ADD_CAR_LIMIT
+        else carsRepositoryDecorator.getCarsSavedByUserCount() < AppConfig.ADD_CAR_LIMIT
     }
 
     override fun isSubscribed(): Boolean {

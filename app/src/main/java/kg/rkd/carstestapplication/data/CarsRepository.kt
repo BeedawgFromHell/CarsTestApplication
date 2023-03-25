@@ -62,6 +62,7 @@ interface CarsRepositoryCarsSavedDecorator : CarsRepository {
     fun getCarsSavedByUserCount(): Int
     fun getCarsSavedByUserCountAsFlow(): Flow<Int>
     suspend fun resetCount()
+    suspend fun addToCount(value: Int = 1)
 }
 
 class CarsRepositoryCarsSavedDecoratorImpl(
@@ -79,5 +80,15 @@ class CarsRepositoryCarsSavedDecoratorImpl(
 
     override suspend fun resetCount() {
         dataStore.set(stringPreferencesKey(AppDataStore.SAVED_CARS_COUNT_KEY), "0")
+    }
+
+    override suspend fun addToCount(value: Int) {
+        val current =
+            dataStore.get(stringPreferencesKey(AppDataStore.SAVED_CARS_COUNT_KEY))?.toIntOrNull()
+                ?: 0
+        dataStore.set(
+            stringPreferencesKey(AppDataStore.SAVED_CARS_COUNT_KEY),
+            (current + 1).toString()
+        )
     }
 }
