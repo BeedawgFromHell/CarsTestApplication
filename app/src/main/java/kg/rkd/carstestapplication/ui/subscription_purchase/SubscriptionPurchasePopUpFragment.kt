@@ -27,7 +27,7 @@ class SubscriptionPurchasePopUpFragment : DialogFragment() {
             .setTitle("Subscribe and increase your car collection!")
             .setMessage(
                 """
-                Get unlimited access to premium feature for ${AppConfig.SUBSCRIPTION_DURATION / 60} minutes for only ${AppConfig.SUBSCRIPTION_PRICE}.
+                Get unlimited access to premium feature for ${AppConfig.SUBSCRIPTION_DURATION / 60000} minutes for only ${AppConfig.SUBSCRIPTION_PRICE}.
             """.trimIndent()
             )
             .setNegativeButton("No, thanks") { _, _ -> }

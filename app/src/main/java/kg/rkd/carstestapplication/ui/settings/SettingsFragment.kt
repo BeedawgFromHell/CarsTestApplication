@@ -160,7 +160,7 @@ private fun CarsCanBeAddedComponent(modifier: Modifier, value: Int) {
                     }
                 }
                 1 -> {
-                    withStyle(SpanStyle(Color.Cyan)) {
+                    withStyle(SpanStyle(Color(255, 165, 0))) {
                         append(value.toString())
                     }
                 }
