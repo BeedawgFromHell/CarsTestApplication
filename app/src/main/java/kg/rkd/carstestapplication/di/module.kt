@@ -27,12 +27,17 @@ val koinModule = module {
 
     single { AppDataStore(androidContext()) }
 
-    single<BillingRepository> { BillingRepositoryFakeImpl(get()) }
+    single<BillingRepository> {
+        FakeBillingRepositorySubDurationDecorator(
+            FakeBillingRepositoryImpl(
+                get()
+            ), androidContext()
+        )
+    }
 
     single<CarsRepository> { CarsRepositoryImpl(get(), get()) }
     single<CarsRepositoryCarsSavedDecorator> { CarsRepositoryCarsSavedDecoratorImpl(get(), get()) }
 
-    factory<BillingRepository> { BillingRepositoryFakeImpl(get()) }
     factory<CarsRepository> { CarsRepositoryImpl(get(), get()) }
     factory<CarsInteractor> {
         CarsInteractorImpl(get())
