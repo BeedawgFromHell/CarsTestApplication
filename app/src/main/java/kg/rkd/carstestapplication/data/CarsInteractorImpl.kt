@@ -8,9 +8,7 @@ import kg.rkd.carstestapplication.domain.CarModel
 import kg.rkd.carstestapplication.domain.CarsInteractor
 import kg.rkd.carstestapplication.domain.CarsInteractorBillingDecorator
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 
@@ -55,11 +53,14 @@ class CarsInteractorImplWithBilling(
 ) : CarsInteractorBillingDecorator, CarsInteractor by interactor {
 
     override fun getCars(): Flow<List<CarModel>> {
-        return if (billingRepository.isSubscribed(BillingRepository.Products.SUBSCRIPTION)) {
-            interactor.getCars()
-        } else {
-            interactor.getCars().map { list ->
-                list.mapIndexed { index, car ->
+        val subFlow = billingRepository.isSubscribedAsFlow(BillingRepository.Products.SUBSCRIPTION)
+        val carsFlow = interactor.getCars()
+
+        return subFlow.combine(carsFlow) { isSubscribed, carList ->
+            if (isSubscribed) {
+                carList
+            } else {
+                carList.mapIndexed { index, car ->
                     if (index > AppConfig.CARS_WITHOUT_SUBSCRIPTION - 1) {
                         car.copy(
                             shouldBeBlurred = true
@@ -75,7 +76,7 @@ class CarsInteractorImplWithBilling(
         else carsRepositoryDecorator.getCarsSavedByUserCount() <= AppConfig.ADD_CAR_LIMIT
     }
 
-    override fun startSubscriptionPurchaseFlow() {
-        billingRepository.buy(BillingRepository.Products.SUBSCRIPTION)
+    override suspend fun startSubscriptionPurchaseFlow() {
+        billingRepository.sub(BillingRepository.Products.SUBSCRIPTION)
     }
 }

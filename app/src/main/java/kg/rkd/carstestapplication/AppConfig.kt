@@ -6,5 +6,4 @@ object AppConfig {
     const val SUBSCRIPTION_PRICE = "10$"
     const val CARS_WITHOUT_SUBSCRIPTION = 3
     const val ADD_CAR_LIMIT = 2
-
 }

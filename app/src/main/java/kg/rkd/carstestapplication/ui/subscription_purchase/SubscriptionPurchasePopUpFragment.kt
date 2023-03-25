@@ -22,6 +22,7 @@ class SubscriptionPurchasePopUpFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val context = requireParentFragment().context
         return AlertDialog.Builder(requireContext())
             .setTitle("Subscribe and increase your car collection!")
             .setMessage(
@@ -33,7 +34,7 @@ class SubscriptionPurchasePopUpFragment : DialogFragment() {
             .setPositiveButton("Buy") { d, i ->
                 viewModel.startSubscriptionPurchaseFlow {
                     Toast.makeText(
-                        requireContext(),
+                        context,
                         "Поздравляем! Вы приобрели подписку!",
                         Toast.LENGTH_LONG
                     ).show()

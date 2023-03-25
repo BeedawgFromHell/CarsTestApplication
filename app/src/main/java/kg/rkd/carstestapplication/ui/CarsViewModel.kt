@@ -17,13 +17,14 @@ class CarsViewModel(
     val cars = _cars.asStateFlow()
 
     private var job: Job? = null
+
     init {
         startCarsFlow()
     }
 
     private fun startCarsFlow() {
-        _cars.value = listOf()
-        if(job != null && job!!.isActive) job!!.cancel()
+//        _cars.value = listOf()
+//        if (job != null && job!!.isActive) job!!.cancel()
         job = interactor.getCars().onEach { _cars.value = it }.launchIn(viewModelScope)
     }
 
@@ -37,10 +38,11 @@ class CarsViewModel(
         }
     }
 
-    fun startSubscriptionPurchaseFlow(onSuccess: () -> Unit){
-        interactor.startSubscriptionPurchaseFlow()
-        startCarsFlow()
-        onSuccess()
+    fun startSubscriptionPurchaseFlow(onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            interactor.startSubscriptionPurchaseFlow()
+            withContext(Dispatchers.Main) { onSuccess() }
+        }
     }
 
 

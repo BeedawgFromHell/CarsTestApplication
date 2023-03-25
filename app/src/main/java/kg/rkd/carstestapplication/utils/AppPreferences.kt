@@ -6,7 +6,6 @@ class AppPreferences(private val context: Context) {
 
     private val pref = context.getSharedPreferences("cars_pref", Context.MODE_PRIVATE)
 
-
     fun set(key: String, value: String) {
         pref.edit().putString(key, value).apply()
     }
