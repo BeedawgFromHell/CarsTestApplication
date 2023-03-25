@@ -12,12 +12,14 @@ import kg.rkd.carstestapplication.R
 
 @Database(
     entities = [
-        CarEntity::class
+        CarEntity::class,
+        PictureEntity::class,
     ],
     version = 1,
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun carDao(): CarDao
+    abstract fun pictureDao(): PictureDao
 }
 
 class StartingCars(private val context: Context) : RoomDatabase.Callback() {

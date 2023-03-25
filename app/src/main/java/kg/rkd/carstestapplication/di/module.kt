@@ -19,7 +19,8 @@ val koinModule = module {
             .fallbackToDestructiveMigration()
             .build()
     }
-    factory { get<AppDatabase>().carDao() }
+    single { get<AppDatabase>().carDao() }
+    single { get<AppDatabase>().pictureDao() }
 
     factory { AppPreferences(androidContext()) }
 
@@ -31,5 +32,6 @@ val koinModule = module {
             billingRepository = get()
         )
     }
+
     viewModel { CarsViewModel(get()) }
 }
