@@ -6,11 +6,8 @@ import kg.rkd.carstestapplication.domain.CarModel
 import kg.rkd.carstestapplication.domain.CarsInteractor
 import kg.rkd.carstestapplication.domain.CarsInteractorBillingDecorator
 import kg.rkd.carstestapplication.ui.add_car.AddCarScreenState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CarsViewModel(
     private val interactor: CarsInteractorBillingDecorator
@@ -19,9 +16,17 @@ class CarsViewModel(
     private val _cars = MutableStateFlow(listOf<CarModel>())
     val cars = _cars.asStateFlow()
 
+    private var job: Job? = null
     init {
-        interactor.getCars().onEach { _cars.value = it }.launchIn(viewModelScope)
+        startCarsFlow()
     }
+
+    private fun startCarsFlow() {
+        _cars.value = listOf()
+        if(job != null && job!!.isActive) job!!.cancel()
+        job = interactor.getCars().onEach { _cars.value = it }.launchIn(viewModelScope)
+    }
+
 
     fun isAllowedToSaveCar() = interactor.isAllowedToSaveCar()
 
@@ -31,4 +36,12 @@ class CarsViewModel(
             withContext(Dispatchers.Main) { onSuccess() }
         }
     }
+
+    fun startSubscriptionPurchaseFlow(onSuccess: () -> Unit){
+        interactor.startSubscriptionPurchaseFlow()
+        startCarsFlow()
+        onSuccess()
+    }
+
+
 }

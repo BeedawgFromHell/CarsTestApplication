@@ -23,11 +23,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.fragment.findNavController
 import kg.rkd.carstestapplication.R
 import kg.rkd.carstestapplication.R.*
 import kg.rkd.carstestapplication.domain.CarModel
 import kg.rkd.carstestapplication.ui.components.CarComponent
+import kg.rkd.carstestapplication.ui.subscription_purchase.SubscriptionPurchasePopUpFragment
 import kg.rkd.carstestapplication.ui_components.DefaultAppBar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -52,14 +54,23 @@ class HomeFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 HomeScreen(
-                    viewModel.cars.collectAsState()
-                ) {
-                    if(viewModel.isAllowedToSaveCar()){
-                        addCarImagePicker.launch("image/*")
-                    }
-                }
+                    cars = viewModel.cars.collectAsStateWithLifecycle(),
+                    onFabClicked = {
+                        if (viewModel.isAllowedToSaveCar()) {
+                            addCarImagePicker.launch("image/*")
+                        } else {
+                            showSubscriptionDialog()
+                        }
+                    },
+                    onSubscriptionClicked = ::showSubscriptionDialog
+                )
             }
         }
+    }
+
+
+    private fun showSubscriptionDialog() {
+        SubscriptionPurchasePopUpFragment.newInstance().show(childFragmentManager, "subscription")
     }
 
     companion object {
@@ -70,7 +81,11 @@ class HomeFragment : Fragment() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun HomeScreen(cars: State<List<CarModel>>, onFabClicked: () -> Unit = {}) {
+private fun HomeScreen(
+    cars: State<List<CarModel>>,
+    onFabClicked: () -> Unit = {},
+    onSubscriptionClicked: () -> Unit = {}
+) {
     Scaffold(
         topBar = { DefaultAppBar(backEnabled = false) },
         floatingActionButton = {
@@ -94,7 +109,11 @@ private fun HomeScreen(cars: State<List<CarModel>>, onFabClicked: () -> Unit = {
             columns = GridCells.Fixed(2),
             content = {
                 items(cars.value) { car ->
-                    CarComponent(modifier = Modifier.padding(6.dp), car = car)
+                    CarComponent(
+                        modifier = Modifier.padding(6.dp),
+                        car = car,
+                        onSubscriptionClicked = onSubscriptionClicked
+                    )
                 }
             })
     }

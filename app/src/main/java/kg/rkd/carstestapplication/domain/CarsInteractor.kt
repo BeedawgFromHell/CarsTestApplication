@@ -10,4 +10,5 @@ interface CarsInteractor {
 
 interface CarsInteractorBillingDecorator: CarsInteractor {
     fun isAllowedToSaveCar(): Boolean
+    fun startSubscriptionPurchaseFlow()
 }

@@ -3,6 +3,7 @@ package kg.rkd.carstestapplication.ui.components
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -27,7 +28,11 @@ import kg.rkd.carstestapplication.domain.CarModel
 import kg.rkd.carstestapplication.utils.DateTimeUtils
 
 @Composable
-fun CarComponent(modifier: Modifier = Modifier, car: CarModel) {
+fun CarComponent(
+    modifier: Modifier = Modifier,
+    car: CarModel,
+    onSubscriptionClicked: () -> Unit = {}
+) {
     val screen = LocalConfiguration.current
     val isPortrait = screen.orientation == ORIENTATION_PORTRAIT
     val height = (screen.screenHeightDp / if (isPortrait) 4 else 1).dp
@@ -94,7 +99,8 @@ fun CarComponent(modifier: Modifier = Modifier, car: CarModel) {
                         .sizeIn(
                             minHeight = (size.height / 4).dp,
                             minWidth = (size.width / 4).dp,
-                        ),
+                        )
+                        .clickable { onSubscriptionClicked() },
                     painter = painterResource(id = R.drawable.ic_subscription),
                     contentDescription = "subscription"
                 )

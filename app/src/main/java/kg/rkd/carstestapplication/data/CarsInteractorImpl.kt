@@ -74,4 +74,8 @@ class CarsInteractorImplWithBilling(
         return if (billingRepository.isSubscribed(BillingRepository.Products.SUBSCRIPTION)) true
         else carsRepositoryDecorator.getCarsSavedByUserCount() <= AppConfig.ADD_CAR_LIMIT
     }
+
+    override fun startSubscriptionPurchaseFlow() {
+        billingRepository.buy(BillingRepository.Products.SUBSCRIPTION)
+    }
 }
