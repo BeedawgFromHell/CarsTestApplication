@@ -3,6 +3,7 @@ package kg.rkd.carstestapplication.data
 import kg.rkd.carstestapplication.AppConfig
 import kg.rkd.carstestapplication.domain.CarModel
 import kg.rkd.carstestapplication.domain.CarsInteractor
+import kg.rkd.carstestapplication.domain.CarsInteractorBillingDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -26,8 +27,9 @@ class CarsInteractorImpl(
 
 class CarsInteractorImplWithBilling(
     private val interactor: CarsInteractor,
-    private val billingRepository: BillingRepository
-) : CarsInteractor by interactor {
+    private val billingRepository: BillingRepository,
+    private val carsRepositoryDecorator: CarsRepositoryDecorator
+) : CarsInteractorBillingDecorator, CarsInteractor by interactor {
 
     override fun getCars(): Flow<List<CarModel>> {
         return if (billingRepository.isSubscribed(BillingRepository.Products.SUBSCRIPTION)) {
@@ -45,4 +47,8 @@ class CarsInteractorImplWithBilling(
         }
     }
 
+    override fun isAllowedToSaveCar(): Boolean {
+        return if (billingRepository.isSubscribed(BillingRepository.Products.SUBSCRIPTION)) true
+        else carsRepositoryDecorator.getCarsSavedByUserCount() <= AppConfig.ADD_CAR_LIMIT
+    }
 }

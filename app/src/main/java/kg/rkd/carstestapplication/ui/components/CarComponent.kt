@@ -1,4 +1,4 @@
-package kg.rkd.carstestapplication.ui.home.components
+package kg.rkd.carstestapplication.ui.components
 
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.BitmapFactory

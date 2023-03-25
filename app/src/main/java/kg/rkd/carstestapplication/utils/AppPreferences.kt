@@ -15,7 +15,17 @@ class AppPreferences(private val context: Context) {
         pref.edit().putBoolean(key, value).apply()
     }
 
+    fun set(key: String, value: Int) {
+        pref.edit().putInt(SAVED_CARS_COUNT_KEY, value).apply()
+    }
+
+    fun getInt(key: String) = pref.getInt(SAVED_CARS_COUNT_KEY, 0)
+
     fun getString(key: String): String? = pref.getString(key, null)
 
     fun getBoolean(key: String): Boolean = pref.getBoolean(key, false)
+
+    companion object{
+        const val SAVED_CARS_COUNT_KEY = "saved_cars"
+    }
 }

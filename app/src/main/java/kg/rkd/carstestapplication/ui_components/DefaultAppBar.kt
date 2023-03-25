@@ -14,7 +14,8 @@ import kg.rkd.carstestapplication.AppConfig
 fun DefaultAppBar(
     modifier: Modifier = Modifier,
     title: String = AppConfig.DEFAULT_TOP_BAR_TITLE,
-    backEnabled: Boolean = true
+    backEnabled: Boolean = true,
+    onBackPressed: () -> Unit = {},
 ) {
     TopAppBar(
         title = {
@@ -22,10 +23,12 @@ fun DefaultAppBar(
         },
         navigationIcon = {
             if (backEnabled) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "back"
-                )
+                IconButton(onClick = onBackPressed) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "back"
+                    )
+                }
             }
         }
     )

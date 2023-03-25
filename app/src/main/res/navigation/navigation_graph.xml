@@ -6,6 +6,16 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="kg.rkd.carstestapplication.ui.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:name="kg.rkd.carstestapplication.ui.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_addCarFragment"
+            app:destination="@id/addCarFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addCarFragment"
+        android:name="kg.rkd.carstestapplication.ui.add_car.AddCarFragment"
+        android:label="AddCarFragment" />
+
 </navigation>

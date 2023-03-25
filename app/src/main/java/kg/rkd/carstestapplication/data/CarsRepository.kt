@@ -4,6 +4,7 @@ import android.util.Base64
 import kg.rkd.carstestapplication.data.db.CarDao
 import kg.rkd.carstestapplication.data.db.CarEntity
 import kg.rkd.carstestapplication.domain.CarModel
+import kg.rkd.carstestapplication.utils.AppPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
@@ -42,4 +43,15 @@ class CarsRepositoryImpl(
             )
         )
     }
+}
+
+interface CarsRepositoryDecorator : CarsRepository {
+    fun getCarsSavedByUserCount(): Int
+}
+
+class CarsRepositoryDecoratorImpl(
+    private val carsRepository: CarsRepository,
+    private val prefs: AppPreferences
+) : CarsRepositoryDecorator, CarsRepository by carsRepository {
+    override fun getCarsSavedByUserCount(): Int = prefs.getInt(AppPreferences.SAVED_CARS_COUNT_KEY)
 }
