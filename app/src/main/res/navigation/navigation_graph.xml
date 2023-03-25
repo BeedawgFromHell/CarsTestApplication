@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
 
     <fragment
@@ -24,5 +27,9 @@
         android:id="@+id/settingsFragment"
         android:name="kg.rkd.carstestapplication.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="kg.rkd.carstestapplication.ui.details.DetailsFragment"
+        android:label="DetailsFragment" />
 
 </navigation>

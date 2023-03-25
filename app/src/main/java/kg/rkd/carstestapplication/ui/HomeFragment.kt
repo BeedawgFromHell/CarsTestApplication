@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -32,6 +33,11 @@ import kg.rkd.carstestapplication.ui_components.DefaultAppBar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
+    companion object {
+        const val CAR_PIC_ARG_KEY = "car_pic"
+        const val CAR_MODEL_ARG_KEY = "car_model"
+    }
+
     private val viewModel: CarsViewModel by viewModel()
 
     private val addCarImagePicker =
@@ -63,7 +69,14 @@ class HomeFragment : Fragment() {
                             showSubscriptionDialog()
                         }
                     },
-                    onSubscriptionClicked = ::showSubscriptionDialog
+                    onSubscriptionClicked = ::showSubscriptionDialog,
+                    onDetailsClicked = {
+                        findNavController().navigate(
+                            R.id.detailsFragment, bundleOf(
+                                CAR_MODEL_ARG_KEY to it
+                            )
+                        )
+                    }
                 )
             }
         }
@@ -72,10 +85,6 @@ class HomeFragment : Fragment() {
 
     private fun showSubscriptionDialog() {
         SubscriptionPurchasePopUpFragment.newInstance().show(childFragmentManager, "subscription")
-    }
-
-    companion object {
-        const val CAR_PIC_ARG_KEY = "car_pic"
     }
 }
 
@@ -86,7 +95,8 @@ private fun HomeScreen(
     cars: State<List<CarModel>>,
     onSettingsClicked: () -> Unit = {},
     onFabClicked: () -> Unit = {},
-    onSubscriptionClicked: () -> Unit = {}
+    onSubscriptionClicked: () -> Unit = {},
+    onDetailsClicked: (CarModel) -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -121,7 +131,11 @@ private fun HomeScreen(
             content = {
                 items(cars.value) { car ->
                     CarComponent(
-                        modifier = Modifier.padding(6.dp),
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .clickable {
+                                if (!car.shouldBeBlurred) onDetailsClicked(car)
+                            },
                         car = car,
                         onSubscriptionClicked = onSubscriptionClicked
                     )

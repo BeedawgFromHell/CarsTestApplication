@@ -40,7 +40,7 @@ val koinModule = module {
         CarsInteractorImpl(get())
     }
     factory<CarsInteractorBillingDecorator> {
-        CarsInteractorImplWithBilling(
+        CarsInteractorBillingDecoratorImpl(
             interactor = get(),
             billingRepository = get(),
             carsRepositoryDecorator = get()

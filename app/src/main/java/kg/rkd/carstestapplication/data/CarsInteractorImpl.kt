@@ -32,8 +32,8 @@ class CarsInteractorImpl(
 
     private fun compressImage(
         imageArray: ByteArray,
-        width: Int = 800,
-        height: Int = 800,
+        width: Int = 1000,
+        height: Int = 1000,
         quality: Int = 80
     ): ByteArray {
         val originalBitmap = BitmapFactory.decodeByteArray(imageArray, 0, imageArray.size)
@@ -46,7 +46,7 @@ class CarsInteractorImpl(
     }
 }
 
-class CarsInteractorImplWithBilling(
+class CarsInteractorBillingDecoratorImpl(
     private val interactor: CarsInteractor,
     private val billingRepository: BillingRepository,
     private val carsRepositoryDecorator: CarsRepositoryCarsSavedDecorator
