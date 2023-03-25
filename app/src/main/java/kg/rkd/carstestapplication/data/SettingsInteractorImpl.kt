@@ -7,20 +7,20 @@ import kotlinx.coroutines.flow.map
 
 class SettingsInteractorImpl(
     private val billingRepository: BillingRepository,
-    private val carsRepositoryImpl: CarsRepositoryCarsSavedDecorator
+    private val carsRepository: CarsRepositoryCarsSavedDecorator
 ): SettingsInteractor {
     override fun isSubscribed(): Flow<Boolean> {
         return billingRepository.isSubscribedAsFlow(BillingRepository.Products.SUBSCRIPTION)
     }
 
     override fun getTriesToSaveCar(): Flow<Int> {
-        return carsRepositoryImpl.getCarsSavedByUserCountAsFlow().map {
+        return carsRepository.getCarsSavedByUserCountAsFlow().map {
             AppConfig.ADD_CAR_LIMIT - it
         }
     }
 
     override suspend fun reset() {
         billingRepository.unSub(BillingRepository.Products.SUBSCRIPTION)
-        carsRepositoryImpl.resetCount()
+        carsRepository.resetCount()
     }
 }
