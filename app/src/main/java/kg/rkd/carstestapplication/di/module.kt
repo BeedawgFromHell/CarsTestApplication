@@ -10,7 +10,6 @@ import kg.rkd.carstestapplication.ui.CarsViewModel
 import kg.rkd.carstestapplication.utils.AppPreferences
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val koinModule = module {
@@ -28,7 +27,7 @@ val koinModule = module {
 
     single<BillingRepository> { BillingRepositoryFakeImpl(get()) }
 
-    single<CarsRepository> { CarsRepositoryImpl(get()) }
+    single<CarsRepository> { CarsRepositoryImpl(get(), get()) }
     single<CarsRepositoryDecorator> { CarsRepositoryDecoratorImpl(get(), get()) }
 
     factory<BillingRepository> { BillingRepositoryFakeImpl(get()) }
