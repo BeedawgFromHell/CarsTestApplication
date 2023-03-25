@@ -25,6 +25,11 @@ val koinModule = module {
 
     factory<BillingRepository> { BillingRepositoryFakeImpl(get()) }
     factory<CarsRepository> { CarsRepositoryImpl(get()) }
-    factory<CarsInteractor> { CarsInteractorImpl(get()) }
+    factory<CarsInteractor> {
+        CarsInteractorImplWithBilling(
+            interactor = CarsInteractorImpl(get()),
+            billingRepository = get()
+        )
+    }
     viewModel { CarsViewModel(get()) }
 }
