@@ -1,7 +1,6 @@
 package kg.rkd.carstestapplication.di
 
 import androidx.room.Room
-import kg.rkd.carstestapplication.MainActivity
 import kg.rkd.carstestapplication.data.*
 import kg.rkd.carstestapplication.data.db.AppDatabase
 import kg.rkd.carstestapplication.data.db.StartingCars
@@ -32,6 +31,8 @@ val koinModule = module {
     single<CarsRepository> { CarsRepositoryImpl(get()) }
     single<CarsRepositoryDecorator> { CarsRepositoryDecoratorImpl(get(), get()) }
 
+    factory<BillingRepository> { BillingRepositoryFakeImpl(get()) }
+    factory<CarsRepository> { CarsRepositoryImpl(get(), get()) }
     factory<CarsInteractor> {
         CarsInteractorImpl(get())
     }
@@ -44,5 +45,4 @@ val koinModule = module {
     }
 
     viewModel { CarsViewModel(get()) }
-
 }
