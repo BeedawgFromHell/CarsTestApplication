@@ -12,6 +12,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import kg.rkd.carstestapplication.ui.add_car.AddCarScreenState
 
 
@@ -39,7 +40,10 @@ fun FieldsComponent(modifier: Modifier = Modifier, state: AddCarScreenState) {
             keyboardActions = KeyboardActions(
                 onDone = { keyboard?.hide() }
             ),
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+                imeAction = ImeAction.Done
+            ),
             onValueChange = {
                 state.engineCapacity.value = it
             },
@@ -52,7 +56,10 @@ fun FieldsComponent(modifier: Modifier = Modifier, state: AddCarScreenState) {
             keyboardActions = KeyboardActions(
                 onDone = { keyboard?.hide() }
             ),
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
             onValueChange = {
                 state.year.value = it
             },
