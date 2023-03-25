@@ -1,9 +1,7 @@
 package kg.rkd.carstestapplication.data
 
-import android.content.Context
 import android.util.Base64
 import androidx.sqlite.db.SimpleSQLiteQuery
-import id.zelory.compressor.Compressor
 import kg.rkd.carstestapplication.data.db.CarDao
 import kg.rkd.carstestapplication.data.db.CarEntity
 import kg.rkd.carstestapplication.data.db.PictureDao
